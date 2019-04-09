@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <title>Mini App</title>
+
+    <style>
+      
+      body {
+        background: lavender;
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        width: 100%;
+        position: fixed;
+      }
+      body h2{text-align: center; margin-bottom: 100px}
+      
+      div.user-photo {
+        width: 150px;
+        height: 150px;
+        margin: 1em auto;
+        background: #fff;
+      }
+      
+      div.details {
+        font-size: 2.3em;
+        margin: 2.5em 0.2em 0.2em 0.2em;
+        color: #fff;
+        padding: 1.1em;
+        min-height: 6em;
+        background-color: #6200ee;
+      }
+   
+      footer {
+        width: calc(100% - 2em);
+        z-index: 500;
+        position: absolute;
+        bottom: 0;
+        overflow: hidden;
+        display: flex;
+        justify-content: space-between;
+        margin: 0 1em;
+      }
+      footer button.material-icons{color: white}
+      .user-photo{border-radius: 30px}
+      footer button.mdc-icon-button {
+        margin: 0.5em;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <h2>Gloria</h2>
+    <div class="user-photo mdc-elevation--z3">
+     <img src="https://via.placeholder.com/150C/Ohttps://placeholder.com/#How_To_Use_Our_Placeholders"/>
+    </div>
+    <div class="details mdc-elevation--z3"></div>
+    <div class="messages"></div>
+    <footer>
+      <button style="color: white" id="btn-address" class="mdc-icon-button material-icons">home</button>
+      <button style="color: white" id="btn-address" class="mdc-icon-button material-icons">delete</button>
+      <button style="color:white" id="btn-address" class="mdc-icon-button material-icons">build</button>
+    </footer>
+    <script>
+      
+      const notify = (msg) => {
+        const toastr = document.querySelector('.messages');
+        if(!toastr) return;
+        
+        toastr.textContent = msg;
+        if(!toastr.classList.contains('on')) {
+          toastr.classList.add('on');
+        }
+      };
+      
+      const clearNotice = () => {
+        const toastr = document.querySelector('.messages');
+        if(!toastr) return;
+        
+        toastr.textContent = '';
+        toastr.classList.remove('on');
+      };
+      
+      const displayUserPhotoAndName = (data) => {
+        if(!data) return;
+        
+        // add your code here
+
+        clearNotice();
+      };
+            
+      const getAUserProfile = () => {
+        const api = 'https://randomuser.me/api/';
+        
+        // make API call here
+        
+        notify(`requesting profile data ...`);
+      };
+      
+      const startApp = () => {
+        // invoke the getAUserProfile here
+      };
+
+      startApp();
+    </script>
+  </body>
+</html>
