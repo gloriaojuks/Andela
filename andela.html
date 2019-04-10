@@ -15,17 +15,21 @@
         height: 100%;
         overflow: hidden;
         width: 100%;
-        position: fixed;
+  
       }
       body h2{text-align: center; margin-bottom: 100px}
       
       div.user-photo {
         width: 150px;
-        height: 150px;
-        margin: 1em auto;
-        background: #fff;
+      height: 150px;
+      margin: 1em auto;
+      border-radius: 50%;
+      background: #fff;
+      overflow: hidden;
       }
-      
+      footer .material-icons{
+        color: white;
+      }
       div.details {
         font-size: 2.3em;
         margin: 2.5em 0.2em 0.2em 0.2em;
@@ -34,6 +38,18 @@
         min-height: 6em;
         background-color: #6200ee;
       }
+      .picture{
+        display: block;
+      width: 100%;
+      height: 100%;
+      }
+      
+      #profile-name {
+      text-align: center;
+      text-transform: capitalize;
+      margin-bottom: 100px;
+
+    }
    
       footer {
         width: calc(100% - 2em);
@@ -54,25 +70,56 @@
     </style>
   </head>
   <body>
-    <h2>Gloria</h2>
+    <h2 id="profile-name">Gloria</h2>
     <div class="user-photo mdc-elevation--z3">
-     <img src="https://via.placeholder.com/150C/Ohttps://placeholder.com/#How_To_Use_Our_Placeholders"/>
+     <img class="picture" id="profileImg"
+     src="https://via.placeholder.com/150C/Ohttps://placeholder.com/#How_To_Use_Our_Placeholders"/>
     </div>
     <div class="details mdc-elevation--z3"></div>
     <div class="messages"></div>
     <footer>
-      <button style="color: white" id="btn-address" class="mdc-icon-button material-icons">home</button>
-      <button style="color: white" id="btn-address" class="mdc-icon-button material-icons">delete</button>
-      <button style="color:white" id="btn-address" class="mdc-icon-button material-icons">build</button>
+      <button onClick="displayAddress(extraInfo)" id="btn-address" class="mdc-icon-button material-icons">home</button>
+      <button onClick="displayPhone(extraInfo)" id="btn-phone" class="mdc-icon-button material-icons">phone</button>
+      <button onClick="displayBirthdate(extraInfo)=>" id="btn-birthdate" class="mdc-icon-button material-icons">build</button>
     </footer>
     <script>
       
+      
+      let displayBirthdate = ({ dob })=>{
+        let detailDiv = document.querySelector('.details');
+        detailDiv.innerText = `${dob.age} years old`;
+      }
+      
+      let displayPhone = ({phone , cell})=>{
+        let detailDiv = document.querySelector('.details');
+      detailDiv.innerText = `${phone} / ${cell}`;
+      }
+
+      let displayAddress = ({location})=>{
+        let detailDiv = document.querySelector('.details');
+      detailDiv.innerText = `${location.street}, ${location.city}, ${location.state}`;
+      }
+
+    const displayExtraUserInfo = (profileData) => {
+      document.getElementById("btn-birthdate").addEventListener('click', () => {
+        displayBirthdate(profileData)
+      })
+
+      document.getElementById("btn-phone").addEventListener('click', () => {
+        displayPhone(profileData)
+      })
+
+      document.getElementById("btn-address").addEventListener('click', () => {
+        displayAddress(profileData)
+      })
+    }
+     
       const notify = (msg) => {
         const toastr = document.querySelector('.messages');
         if(!toastr) return;
         
         toastr.textContent = msg;
-        if(!toastr.classList.contains('on')) {
+        if(toastr.classList.contains('on')) {
           toastr.classList.add('on');
         }
       };
@@ -87,22 +134,31 @@
       
       const displayUserPhotoAndName = (data) => {
         if(!data) return;
-        
-        // add your code here
-
+        const { results } = data;
+      // add your code here
+        const [profile] = results;
+        const { name, picture } = profile
+        const nameHeader = document.getElementById("profile-name");
+        nameHeader.innerText = `${name.title} ${name.last} ${name.first}`
+        const profileImg = document.getElementById("profileImg");
+        profileImg.src = picture.large;
+        displayExtraUserInfo(profile);
         clearNotice();
       };
             
-      const getAUserProfile = () => {
+      const getAUserProfile = async() => {
         const api = 'https://randomuser.me/api/';
         
         // make API call here
-        
+        const apiRes = await fetch(api);
+        const data = await apiRes.json();
+        displayUserPhotoAndName(data)
         notify(`requesting profile data ...`);
       };
       
       const startApp = () => {
         // invoke the getAUserProfile here
+        getAUserProfile();
       };
 
       startApp();
